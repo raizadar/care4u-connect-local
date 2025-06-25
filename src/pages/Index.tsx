@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,8 @@ import { HelpRequestCard } from '@/components/HelpRequestCard';
 import { CreateHelpRequest } from '@/components/CreateHelpRequest';
 import { UserProfile } from '@/components/UserProfile';
 import { AdminDashboard } from '@/components/AdminDashboard';
+import { Navigation } from '@/components/Navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const [userRole, setUserRole] = useState<UserRole>('helper');
@@ -19,6 +20,7 @@ const Index = () => {
   const [showCreateRequest, setShowCreateRequest] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const checkAuth = () => {
@@ -49,6 +51,11 @@ const Index = () => {
     navigate('/signup');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setIsLoggedIn(false);
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50">
@@ -58,19 +65,19 @@ const Index = () => {
             <div className="flex items-center justify-center mb-6">
               <Heart className="w-12 h-12 text-red-500 mr-3" />
               <h1 className="text-4xl font-bold text-gray-800">
-                Care4U
+                {t('home.hero.title')}
                 <span className="text-2xl text-gray-600 mr-2">דואג לך</span>
               </h1>
             </div>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Connecting people who need help with those who care to help - instantly, locally, and completely free.
+              {t('home.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={handleSignup} className="bg-blue-600 hover:bg-blue-700">
-                Get Started
+                {t('home.get_started')}
               </Button>
               <Button size="lg" variant="outline" onClick={handleLogin}>
-                Sign In
+                {t('home.sign_in')}
               </Button>
             </div>
           </div>
@@ -80,25 +87,25 @@ const Index = () => {
             <Card className="text-center">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-blue-600">1,247</div>
-                <div className="text-sm text-gray-600">Helps Today</div>
+                <div className="text-sm text-gray-600">{t('home.stats.today')}</div>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-green-600">8,932</div>
-                <div className="text-sm text-gray-600">This Week</div>
+                <div className="text-sm text-gray-600">{t('home.stats.week')}</div>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-amber-600">45,678</div>
-                <div className="text-sm text-gray-600">This Month</div>
+                <div className="text-sm text-gray-600">{t('home.stats.month')}</div>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-red-600">156,789</div>
-                <div className="text-sm text-gray-600">All Time</div>
+                <div className="text-sm text-gray-600">{t('home.stats.all_time')}</div>
               </CardContent>
             </Card>
           </div>
@@ -109,18 +116,18 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Users className="w-6 h-6 mr-2 text-blue-600" />
-                  Need Help?
+                  {t('features.need_help.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
-                  Post your request and get matched with nearby volunteers who can assist you.
+                  {t('features.need_help.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-600">
-                  <li>• Grocery shopping & errands</li>
-                  <li>• Transportation assistance</li>
-                  <li>• Companionship & support</li>
-                  <li>• Technical help</li>
+                  <li>{t('features.need_help.grocery')}</li>
+                  <li>{t('features.need_help.transport')}</li>
+                  <li>{t('features.need_help.companion')}</li>
+                  <li>{t('features.need_help.tech')}</li>
                 </ul>
               </CardContent>
             </Card>
@@ -128,18 +135,18 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Heart className="w-6 h-6 mr-2 text-red-600" />
-                  Want to Help?
+                  {t('features.want_help.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
-                  Browse help requests in your area and make a difference in someone's day.
+                  {t('features.want_help.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-600">
-                  <li>• Set your availability</li>
-                  <li>• Choose your skills</li>
-                  <li>• Get matched locally</li>
-                  <li>• Build community</li>
+                  <li>{t('features.want_help.availability')}</li>
+                  <li>{t('features.want_help.skills')}</li>
+                  <li>{t('features.want_help.local')}</li>
+                  <li>{t('features.want_help.community')}</li>
                 </ul>
               </CardContent>
             </Card>
@@ -159,29 +166,15 @@ const Index = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <Heart className="w-8 h-8 text-red-500 mr-2" />
-            <h1 className="text-2xl font-bold text-gray-800">Care4U</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowProfile(true)}
-              className="text-gray-600"
-            >
-              Profile
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                localStorage.removeItem('currentUser');
-                setIsLoggedIn(false);
-              }}
-              className="text-gray-600"
-            >
-              Logout
-            </Button>
+            <Navigation
+              userRole={userRole}
+              onRoleSwitch={handleRoleSwitch}
+              onShowProfile={() => setShowProfile(true)}
+              onLogout={handleLogout}
+              userRoles={user?.roles || []}
+            />
+            <Heart className="w-8 h-8 text-red-500 mx-2" />
+            <h1 className="text-2xl font-bold text-gray-800">{t('app.title')}</h1>
           </div>
         </div>
 
@@ -195,7 +188,7 @@ const Index = () => {
               className="rounded-md"
             >
               <Users className="w-4 h-4 mr-2" />
-              Need Help
+              {t('role.need_help')}
             </Button>
             <Button
               variant={userRole === 'helper' ? 'default' : 'ghost'}
@@ -204,7 +197,7 @@ const Index = () => {
               className="rounded-md"
             >
               <Heart className="w-4 h-4 mr-2" />
-              Want to Help
+              {t('role.want_to_help')}
             </Button>
             {user?.roles?.includes('admin') && (
               <Button
@@ -213,7 +206,7 @@ const Index = () => {
                 onClick={() => handleRoleSwitch('admin')}
                 className="rounded-md"
               >
-                Admin
+                {t('role.admin')}
               </Button>
             )}
           </div>
@@ -223,13 +216,13 @@ const Index = () => {
         {userRole === 'seeker' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-800">My Requests</h2>
+              <h2 className="text-xl font-semibold text-gray-800">{t('seeker.my_requests')}</h2>
               <Button
                 onClick={() => setShowCreateRequest(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                New Request
+                {t('seeker.new_request')}
               </Button>
             </div>
             
@@ -269,7 +262,7 @@ const Index = () => {
 
         {userRole === 'helper' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Help Feed</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('helper.help_feed')}</h2>
             <div className="grid gap-4">
               <HelpRequestCard
                 id="3"
