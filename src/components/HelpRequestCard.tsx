@@ -2,9 +2,10 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Clock, Users, Heart, MessageCircle, CheckCircle } from 'lucide-react';
+import { MapPin, Clock, Users, Heart, MessageCircle, CheckCircle, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface HelpRequestCardProps {
   id: string;
@@ -16,6 +17,13 @@ interface HelpRequestCardProps {
   status: 'active' | 'matched' | 'completed';
   matches: number;
   isOwner: boolean;
+  interestedHelpers?: Array<{
+    id: string;
+    name: string;
+    rating: number;
+    distance: string;
+  }>;
+  onViewProfile?: (helperId: string) => void;
 }
 
 export const HelpRequestCard = ({ 
@@ -27,30 +35,34 @@ export const HelpRequestCard = ({
   timeAgo, 
   status, 
   matches, 
-  isOwner 
+  isOwner,
+  interestedHelpers = [],
+  onViewProfile
 }: HelpRequestCardProps) => {
   const [isInterested, setIsInterested] = useState(false);
+  const [showInterestedHelpers, setShowInterestedHelpers] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleInterest = () => {
     setIsInterested(true);
     toast({
-      title: "Interest expressed!",
-      description: "The person who needs help has been notified.",
+      title: t('toast.interest_expressed'),
+      description: t('toast.interest_description'),
     });
   };
 
   const handleTakeRequest = () => {
     toast({
-      title: "Request taken!",
-      description: "You've committed to helping. Please contact the person who needs help.",
+      title: t('toast.request_taken'),
+      description: t('toast.request_taken_description'),
     });
   };
 
   const handleChat = () => {
     toast({
-      title: "Chat opened",
-      description: "You can now chat with the other person.",
+      title: t('toast.chat_opened'),
+      description: t('toast.chat_description'),
     });
   };
 
@@ -84,10 +96,10 @@ export const HelpRequestCard = ({
             <p className="text-gray-600 text-sm mb-3">{description}</p>
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge className={getCategoryColor(category)}>
-                {category}
+                {t(`category.${category}`)}
               </Badge>
               <Badge className={getStatusColor(status)}>
-                {status}
+                {t(`status.${status}`)}
               </Badge>
             </div>
           </div>
@@ -95,21 +107,64 @@ export const HelpRequestCard = ({
         <div className="flex items-center gap-4 text-sm text-gray-500">
           <div className="flex items-center gap-1">
             <MapPin className="w-4 h-4" />
-            {distance}
+            {distance} {t('request.away')}
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            {timeAgo}
+            {t('request.ago')} {timeAgo}
           </div>
           {matches > 0 && (
             <div className="flex items-center gap-1">
               <Users className="w-4 h-4" />
-              {matches} interested
+              {matches} {t('request.interested')}
             </div>
           )}
         </div>
       </CardHeader>
       <CardContent className="pt-0">
+        {/* Show interested helpers if owner and there are matches */}
+        {isOwner && matches > 0 && (
+          <div className="mb-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowInterestedHelpers(!showInterestedHelpers)}
+              className="w-full mb-2"
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              {t('seeker.interested_helpers')} ({matches})
+            </Button>
+            
+            {showInterestedHelpers && (
+              <div className="space-y-2 p-3 bg-gray-50 rounded-md">
+                {interestedHelpers.length > 0 ? (
+                  interestedHelpers.map((helper) => (
+                    <div key={helper.id} className="flex items-center justify-between p-2 bg-white rounded border">
+                      <div>
+                        <p className="font-medium">{helper.name}</p>
+                        <p className="text-sm text-gray-600">
+                          ⭐ {helper.rating}/5 • {helper.distance} {t('request.away')}
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onViewProfile?.(helper.id)}
+                      >
+                        {t('seeker.view_profile')}
+                      </Button>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500 text-center py-2">
+                    {t('seeker.no_interested')}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="flex gap-2">
           {!isOwner && status === 'active' && (
             <>
@@ -121,7 +176,7 @@ export const HelpRequestCard = ({
                 className="flex-1"
               >
                 <Heart className="w-4 h-4 mr-2" />
-                {isInterested ? 'Interested' : 'I can help'}
+                {isInterested ? t('request.interested') : t('request.i_can_help')}
               </Button>
               <Button
                 size="sm"
@@ -129,7 +184,7 @@ export const HelpRequestCard = ({
                 className="flex-1 bg-blue-600 hover:bg-blue-700"
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Take Request
+                {t('request.take_request')}
               </Button>
             </>
           )}
@@ -141,7 +196,7 @@ export const HelpRequestCard = ({
               className="flex-1"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
-              Chat
+              {t('request.chat')}
             </Button>
           )}
           {isOwner && status === 'matched' && (
@@ -150,7 +205,7 @@ export const HelpRequestCard = ({
               className="flex-1 bg-green-600 hover:bg-green-700"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
-              Mark Complete
+              {t('request.mark_complete')}
             </Button>
           )}
         </div>

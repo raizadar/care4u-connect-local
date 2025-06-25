@@ -57,9 +57,78 @@ const translations = {
     // Seeker Mode
     'seeker.my_requests': 'My Requests',
     'seeker.new_request': 'New Request',
+    'seeker.interested_helpers': 'Interested Helpers',
+    'seeker.view_profile': 'View Profile',
+    'seeker.no_interested': 'No one has shown interest yet',
     
     // Helper Mode
     'helper.help_feed': 'Help Feed',
+    
+    // Help Request Card
+    'request.interested': 'interested',
+    'request.i_can_help': 'I can help',
+    'request.take_request': 'Take Request',
+    'request.chat': 'Chat',
+    'request.mark_complete': 'Mark Complete',
+    'request.away': 'away',
+    'request.ago': 'ago',
+    'request.hours_ago': 'hours ago',
+    'request.minutes_ago': 'minutes ago',
+    'request.days_ago': 'days ago',
+    
+    // Status
+    'status.active': 'Active',
+    'status.matched': 'Matched',
+    'status.completed': 'Completed',
+    
+    // Categories
+    'category.Shopping': 'Shopping',
+    'category.Transportation': 'Transportation',
+    'category.Moving': 'Moving',
+    'category.Technology': 'Technology',
+    'category.Companionship': 'Companionship',
+    
+    // Profile
+    'profile.title': 'Profile',
+    'profile.basic_info': 'Basic Information',
+    'profile.full_name': 'Full Name',
+    'profile.phone': 'Phone',
+    'profile.privacy_level': 'Privacy Level',
+    'profile.member_since': 'Member since',
+    'profile.availability': 'Availability',
+    'profile.available_days': 'Available Days:',
+    'profile.hours': 'Hours:',
+    'profile.notifications': 'Notifications:',
+    'profile.additional_info': 'Additional Information',
+    'profile.population_group': 'Population Group:',
+    'profile.special_needs': 'Special Needs:',
+    'profile.activity_stats': 'Activity Stats',
+    'profile.helps_given': 'Helps Given',
+    'profile.helps_received': 'Helps Received',
+    'profile.average_rating': 'Average Rating',
+    'profile.community_points': 'Community Points',
+    'profile.save_changes': 'Save Changes',
+    'profile.cancel': 'Cancel',
+    'profile.history': 'Help History',
+    'profile.reviews': 'Reviews & Ratings',
+    'profile.no_reviews': 'No reviews yet',
+    'profile.verified': 'Verified',
+    'profile.pending': 'Pending',
+    'profile.unverified': 'Unverified',
+    
+    // Days
+    'day.Sunday': 'Sunday',
+    'day.Monday': 'Monday',
+    'day.Tuesday': 'Tuesday',
+    'day.Wednesday': 'Wednesday',
+    'day.Thursday': 'Thursday',
+    'day.Friday': 'Friday',
+    'day.Saturday': 'Saturday',
+    
+    // Privacy Levels
+    'privacy.none': 'Full Profile Visible',
+    'privacy.partial': 'Partial Anonymity',
+    'privacy.full': 'Full Anonymity',
     
     // Login
     'login.title': 'Sign in to your account',
@@ -83,6 +152,14 @@ const translations = {
     'toast.invalid_credentials': 'Invalid email or password.',
     'toast.error': 'Error',
     'toast.something_wrong': 'Something went wrong. Please try again.',
+    'toast.interest_expressed': 'Interest expressed!',
+    'toast.interest_description': 'The person who needs help has been notified.',
+    'toast.request_taken': 'Request taken!',
+    'toast.request_taken_description': 'You\'ve committed to helping. Please contact the person who needs help.',
+    'toast.chat_opened': 'Chat opened',
+    'toast.chat_description': 'You can now chat with the other person.',
+    'toast.profile_updated': 'Profile updated!',
+    'toast.profile_updated_description': 'Your changes have been saved successfully.',
   },
   he: {
     // Header
@@ -131,9 +208,78 @@ const translations = {
     // Seeker Mode
     'seeker.my_requests': 'הבקשות שלי',
     'seeker.new_request': 'בקשה חדשה',
+    'seeker.interested_helpers': 'מתנדבים מעוניינים',
+    'seeker.view_profile': 'צפה בפרופיל',
+    'seeker.no_interested': 'עדיין אף אחד לא הביע עניין',
     
     // Helper Mode
     'helper.help_feed': 'עזרות זמינות',
+    
+    // Help Request Card
+    'request.interested': 'מעוניינים',
+    'request.i_can_help': 'אני יכול לעזור',
+    'request.take_request': 'קח בקשה',
+    'request.chat': 'צ\'אט',
+    'request.mark_complete': 'סמן כהושלם',
+    'request.away': 'מרחק',
+    'request.ago': 'לפני',
+    'request.hours_ago': 'שעות',
+    'request.minutes_ago': 'דקות',
+    'request.days_ago': 'ימים',
+    
+    // Status
+    'status.active': 'פעיל',
+    'status.matched': 'הותאם',
+    'status.completed': 'הושלם',
+    
+    // Categories
+    'category.Shopping': 'קניות',
+    'category.Transportation': 'הסעות',
+    'category.Moving': 'העברת דירה',
+    'category.Technology': 'טכנולוגיה',
+    'category.Companionship': 'ליווי',
+    
+    // Profile
+    'profile.title': 'פרופיל',
+    'profile.basic_info': 'מידע בסיסי',
+    'profile.full_name': 'שם מלא',
+    'profile.phone': 'טלפון',
+    'profile.privacy_level': 'רמת פרטיות',
+    'profile.member_since': 'חבר מאז',
+    'profile.availability': 'זמינות',
+    'profile.available_days': 'ימים זמינים:',
+    'profile.hours': 'שעות:',
+    'profile.notifications': 'התראות:',
+    'profile.additional_info': 'מידע נוסף',
+    'profile.population_group': 'קבוצת אוכלוסין:',
+    'profile.special_needs': 'צרכים מיוחדים:',
+    'profile.activity_stats': 'סטטיסטיקות פעילות',
+    'profile.helps_given': 'עזרות שנתן',
+    'profile.helps_received': 'עזרות שקיבל',
+    'profile.average_rating': 'דירוג ממוצע',
+    'profile.community_points': 'נקודות קהילה',
+    'profile.save_changes': 'שמור שינויים',
+    'profile.cancel': 'ביטול',
+    'profile.history': 'היסטוריית עזרה',
+    'profile.reviews': 'ביקורות ודירוגים',
+    'profile.no_reviews': 'עדיין אין ביקורות',
+    'profile.verified': 'מאומת',
+    'profile.pending': 'בהמתנה',
+    'profile.unverified': 'לא מאומת',
+    
+    // Days
+    'day.Sunday': 'ראשון',
+    'day.Monday': 'שני',
+    'day.Tuesday': 'שלישי',
+    'day.Wednesday': 'רביעי',
+    'day.Thursday': 'חמישי',
+    'day.Friday': 'שישי',
+    'day.Saturday': 'שבת',
+    
+    // Privacy Levels
+    'privacy.none': 'פרופיל מלא גלוי',
+    'privacy.partial': 'אנונימיות חלקית',
+    'privacy.full': 'אנונימיות מלאה',
     
     // Login
     'login.title': 'התחבר לחשבון שלך',
@@ -157,6 +303,14 @@ const translations = {
     'toast.invalid_credentials': 'אימייל או סיסמה שגויים.',
     'toast.error': 'שגיאה',
     'toast.something_wrong': 'משהו השתבש. אנא נסה שוב.',
+    'toast.interest_expressed': 'עניין הובע!',
+    'toast.interest_description': 'האדם שצריך עזרה קיבל התראה.',
+    'toast.request_taken': 'הבקשה נלקחה!',
+    'toast.request_taken_description': 'התחייבת לעזור. אנא צור קשר עם האדם שצריך עזרה.',
+    'toast.chat_opened': 'צ\'אט נפתח',
+    'toast.chat_description': 'עכשיו אתה יכול לצ\'אט עם האדם השני.',
+    'toast.profile_updated': 'הפרופיל עודכן!',
+    'toast.profile_updated_description': 'השינויים שלך נשמרו בהצלחה.',
   }
 };
 

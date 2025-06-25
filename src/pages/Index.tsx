@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,12 +14,20 @@ import { AdminDashboard } from '@/components/AdminDashboard';
 import { Navigation } from '@/components/Navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+// Mock data for interested helpers
+const mockInterestedHelpers = [
+  { id: '1', name: 'יוסי כהן', rating: 4.8, distance: '0.3 km' },
+  { id: '2', name: 'רחל לוי', rating: 4.9, distance: '0.7 km' },
+  { id: '3', name: 'דוד ישראלי', rating: 4.6, distance: '1.2 km' }
+];
+
 const Index = () => {
   const [userRole, setUserRole] = useState<UserRole>('helper');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showCreateRequest, setShowCreateRequest] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -54,6 +63,11 @@ const Index = () => {
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setIsLoggedIn(false);
+  };
+
+  const handleViewProfile = (profileId: string) => {
+    setViewingProfileId(profileId);
+    setShowProfile(true);
   };
 
   if (!isLoggedIn) {
@@ -157,7 +171,35 @@ const Index = () => {
   }
 
   if (showProfile) {
-    return <UserProfile user={user} onBack={() => setShowProfile(false)} />;
+    // If viewing another user's profile
+    if (viewingProfileId && viewingProfileId !== user.id) {
+      // Mock profile data for other users
+      const mockProfile = {
+        ...user,
+        id: viewingProfileId,
+        fullName: mockInterestedHelpers.find(h => h.id === viewingProfileId)?.name || 'Unknown User',
+        email: 'helper@example.com',
+        verificationStatus: 'verified' as const
+      };
+      return (
+        <UserProfile 
+          user={mockProfile} 
+          onBack={() => {
+            setShowProfile(false);
+            setViewingProfileId(null);
+          }}
+          isViewOnly={true}
+        />
+      );
+    }
+    
+    // Viewing own profile
+    return (
+      <UserProfile 
+        user={user} 
+        onBack={() => setShowProfile(false)} 
+      />
+    );
   }
 
   return (
@@ -238,22 +280,26 @@ const Index = () => {
                   title="Need help with grocery shopping"
                   description="Looking for someone to help me with weekly grocery shopping. I have mobility issues and would appreciate assistance."
                   category="Shopping"
-                  distance="0.5 km away"
-                  timeAgo="2 hours ago"
+                  distance="0.5 km"
+                  timeAgo="2 hours"
                   status="active"
                   matches={3}
                   isOwner={true}
+                  interestedHelpers={mockInterestedHelpers}
+                  onViewProfile={handleViewProfile}
                 />
                 <HelpRequestCard
                   id="2"
                   title="Ride to medical appointment"
                   description="Need transportation to doctor's appointment on Tuesday at 2 PM."
                   category="Transportation"
-                  distance="1.2 km away"
-                  timeAgo="1 day ago"
+                  distance="1.2 km"
+                  timeAgo="1 day"
                   status="matched"
                   matches={1}
                   isOwner={true}
+                  interestedHelpers={[mockInterestedHelpers[0]]}
+                  onViewProfile={handleViewProfile}
                 />
               </div>
             )}
@@ -269,8 +315,8 @@ const Index = () => {
                 title="Help with moving boxes"
                 description="Moving to a new apartment and need help carrying boxes up to the 3rd floor. Should take about 2 hours."
                 category="Moving"
-                distance="0.8 km away"
-                timeAgo="30 minutes ago"
+                distance="0.8 km"
+                timeAgo="30 minutes"
                 status="active"
                 matches={0}
                 isOwner={false}
@@ -280,8 +326,8 @@ const Index = () => {
                 title="Tech support for elderly person"
                 description="My grandmother needs help setting up her new smartphone and learning basic functions."
                 category="Technology"
-                distance="1.5 km away"
-                timeAgo="1 hour ago"
+                distance="1.5 km"
+                timeAgo="1 hour"
                 status="active"
                 matches={2}
                 isOwner={false}
@@ -291,8 +337,8 @@ const Index = () => {
                 title="Companion for doctor visit"
                 description="Looking for someone to accompany me to a medical appointment for moral support."
                 category="Companionship"
-                distance="2.1 km away"
-                timeAgo="3 hours ago"
+                distance="2.1 km"
+                timeAgo="3 hours"
                 status="active"
                 matches={1}
                 isOwner={false}
