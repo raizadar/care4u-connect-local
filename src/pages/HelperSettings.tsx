@@ -39,7 +39,7 @@ interface AvailabilitySlot {
 interface HelperSettingsData {
   fullName: string;
   photoURL?: string;
-  anonymityLevel: number;
+  anonymityLevel: 'none' | 'partial' | 'full';
   pushWindowStart: string;
   pushWindowEnd: string;
   helperSkills: string[];
@@ -85,7 +85,7 @@ const HelperSettings = () => {
   const [settings, setSettings] = useState<HelperSettingsData>({
     fullName: user?.fullName || '',
     photoURL: user?.photoURL,
-    anonymityLevel: 1,
+    anonymityLevel: 'partial',
     pushWindowStart: '22:00',
     pushWindowEnd: '07:00',
     helperSkills: [],
@@ -259,20 +259,20 @@ const HelperSettings = () => {
               <div>
                 <Label>{t('helper_settings.privacy_level')}</Label>
                 <RadioGroup
-                  value={settings.anonymityLevel.toString()}
-                  onValueChange={(value) => setSettings(prev => ({ ...prev, anonymityLevel: parseInt(value) }))}
+                  value={settings.anonymityLevel}
+                  onValueChange={(value: 'none' | 'partial' | 'full') => setSettings(prev => ({ ...prev, anonymityLevel: value }))}
                   className="mt-2"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="0" id="public" />
+                    <RadioGroupItem value="none" id="public" />
                     <Label htmlFor="public">{t('helper_settings.public')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="1" id="nickname" />
+                    <RadioGroupItem value="partial" id="nickname" />
                     <Label htmlFor="nickname">{t('helper_settings.nickname_only')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="2" id="anonymous" />
+                    <RadioGroupItem value="full" id="anonymous" />
                     <Label htmlFor="anonymous">{t('helper_settings.anonymous')}</Label>
                   </div>
                 </RadioGroup>
