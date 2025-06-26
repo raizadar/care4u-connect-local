@@ -102,6 +102,17 @@ export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, us
               {t('nav.profile')}
             </Button>
 
+            {userRole === 'helper' && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => handleMenuItemClick(() => window.location.href = '/helper-settings')}
+              >
+                <Settings className="w-5 h-5 mr-3" />
+                {t('helper_settings.title')}
+              </Button>
+            )}
+
             {userRoles.includes('admin') && (
               <Button
                 variant="ghost"

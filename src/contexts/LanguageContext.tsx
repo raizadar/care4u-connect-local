@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'he';
@@ -160,6 +159,41 @@ const translations = {
     'toast.chat_description': 'You can now chat with the other person.',
     'toast.profile_updated': 'Profile updated!',
     'toast.profile_updated_description': 'Your changes have been saved successfully.',
+    
+    helper_settings: {
+      title: "Helper Settings",
+      profile: "Profile",
+      upload_photo: "Upload Photo",
+      display_name: "Display Name",
+      name_placeholder: "Enter your name",
+      privacy_level: "Privacy Level",
+      public: "Public - Show real name",
+      nickname_only: "Nickname only",
+      anonymous: "Anonymous",
+      availability: "Availability",
+      add_slot: "Add Time Slot",
+      quiet_hours: "Quiet Hours",
+      quiet_start: "Start Time",
+      quiet_end: "End Time",
+      skills: "Skills & Interests",
+      target_populations: "Target Populations",
+      settings_updated: "Settings Updated",
+      changes_saved: "Your changes have been saved successfully",
+      save_error: "Failed to save settings. Please check your connection.",
+      skills_required: "Please select at least one skill",
+      invalid_time_range: "End time must be after start time"
+    },
+    
+    validation: {
+      error: "Error",
+      name_min_length: "Name must be at least 2 characters long"
+    },
+    
+    common: {
+      save: "Save",
+      cancel: "Cancel",
+      saving: "Saving..."
+    }
   },
   he: {
     // Header
@@ -311,6 +345,41 @@ const translations = {
     'toast.chat_description': 'עכשיו אתה יכול לצ\'אט עם האדם השני.',
     'toast.profile_updated': 'הפרופיל עודכן!',
     'toast.profile_updated_description': 'השינויים שלך נשמרו בהצלחה.',
+    
+    helper_settings: {
+      title: "הגדרות מתנדב",
+      profile: "פרופיל",
+      upload_photo: "העלה תמונה",
+      display_name: "שם להצגה",
+      name_placeholder: "הזן את שמך",
+      privacy_level: "רמת פרטיות",
+      public: "ציבורי - הצג שם אמיתי",
+      nickname_only: "כינוי בלבד",
+      anonymous: "אנונימי",
+      availability: "זמינות",
+      add_slot: "הוסף משבצת זמן",
+      quiet_hours: "שעות שקט",
+      quiet_start: "שעת התחלה",
+      quiet_end: "שעת סיום",
+      skills: "כישורים ותחומי עניין",
+      target_populations: "אוכלוסיות יעד",
+      settings_updated: "ההגדרות עודכנו",
+      changes_saved: "השינויים נשמרו בהצלחה",
+      save_error: "שמירת ההגדרות נכשלה. אנא בדוק את החיבור שלך.",
+      skills_required: "אנא בחר לפחות כישור אחד",
+      invalid_time_range: "שעת הסיום חייבת להיות אחרי שעת ההתחלה"
+    },
+    
+    validation: {
+      error: "שגיאה",
+      name_min_length: "השם חייב להכיל לפחות 2 תווים"
+    },
+    
+    common: {
+      save: "שמור",
+      cancel: "ביטול",
+      saving: "שומר..."
+    }
   }
 };
 
