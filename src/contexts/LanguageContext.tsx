@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'he';
 
@@ -10,319 +11,336 @@ interface LanguageContextType {
 
 const translations = {
   en: {
+    // Header
     'app.title': 'Care4U',
     'app.logout': 'Logout',
-    
-    // Home page
-    'home.hero.title': 'Community Care Network',
-    'home.hero.subtitle': 'Connecting those who need help with those who want to help',
-    'home.get_started': 'Get Started',
-    'home.sign_in': 'Sign In',
-    'home.stats.today': 'helped today',
-    'home.stats.week': 'helped this week', 
-    'home.stats.month': 'helped this month',
-    'home.stats.all_time': 'total help requests',
-    
-    // Features
-    'features.need_help.title': 'Need Help?',
-    'features.need_help.description': 'Get assistance from verified community volunteers',
-    'features.need_help.grocery': '🛒 Grocery shopping',
-    'features.need_help.transport': '🚗 Transportation',
-    'features.need_help.companion': '👥 Companionship',
-    'features.need_help.tech': '💻 Tech support',
-    'features.want_help.title': 'Want to Help?',
-    'features.want_help.description': 'Join our community of volunteers and make a difference',
-    'features.want_help.availability': '⏰ Set your availability',
-    'features.want_help.skills': '🎯 Share your skills',
-    'features.want_help.local': '📍 Help locally',
-    'features.want_help.community': '❤️ Build community',
-    
-    // Roles
-    'role.need_help': 'Need Help',
-    'role.want_to_help': 'Want to Help', 
-    'role.admin': 'Admin',
+    'app.profile': 'Profile',
     
     // Navigation
     'nav.home': 'Home',
     'nav.requests': 'My Requests',
     'nav.help_feed': 'Help Feed',
     'nav.profile': 'Profile',
-    'nav.admin': 'Admin Panel',
+    'nav.admin': 'Admin',
+    'nav.language': 'Language',
     
-    // Seeker
-    'seeker.my_requests': 'My Help Requests',
-    'seeker.new_request': 'New Request',
+    // Role Switcher
+    'role.need_help': 'Need Help',
+    'role.want_to_help': 'Want to Help',
+    'role.admin': 'Admin',
     
-    // Helper  
-    'helper.help_feed': 'Available Help Requests',
-    
-    // Help Request Card
-    'help_request.express_interest': 'Express Interest',
-    'help_request.chat': 'Chat',
-    'help_request.take': 'Take Request',
-    'help_request.interested_helpers': 'Interested Helpers',
-    'help_request.view_profile': 'View Profile',
-    'help_request.rating': 'Rating',
-    'help_request.distance': 'Distance',
-    'help_request.matches': 'matches',
-    'help_request.active': 'Active',
-    'help_request.matched': 'Matched',
-    'help_request.completed': 'Completed',
-    'help_request.cancelled': 'Cancelled',
-    
-    // Create Help Request
-    'create_request.title': 'Create Help Request',
-    'create_request.request_title': 'Title',
-    'create_request.request_title_placeholder': 'What help do you need?',
-    'create_request.description': 'Description',
-    'create_request.description_placeholder': 'Please describe what help you need...',
-    'create_request.category': 'Category',
-    'create_request.select_category': 'Select a category',
-    'create_request.urgency': 'Urgency',
-    'create_request.low': 'Low',
-    'create_request.medium': 'Medium',
-    'create_request.high': 'High',
-    'create_request.location': 'Location',
-    'create_request.location_placeholder': 'Where do you need help?',
-    'create_request.preferred_time': 'Preferred Time',
-    'create_request.cancel': 'Cancel',
-    'create_request.submit': 'Submit Request',
-    
-    // User Profile
-    'profile.title': 'User Profile',
-    'profile.edit_profile': 'Edit Profile',
-    'profile.full_name': 'Full Name',
-    'profile.email': 'Email',
-    'profile.phone': 'Phone',
-    'profile.location': 'Location',
-    'profile.member_since': 'Member since',
-    'profile.verification_status': 'Verification Status',
-    'profile.verified': 'Verified',
-    'profile.pending': 'Pending',
-    'profile.roles': 'Roles',
-    'profile.overview': 'Overview',
-    'profile.history': 'History',
-    'profile.reviews': 'Reviews',
-    'profile.help_provided': 'Help Provided',
-    'profile.help_received': 'Help Received',
-    'profile.average_rating': 'Average Rating',
-    'profile.total_reviews': 'Total Reviews',
-    'profile.recent_activity': 'Recent Activity',
-    'profile.no_activity': 'No recent activity',
-    'profile.no_reviews': 'No reviews yet',
-    'profile.back': 'Back',
-    
-    // Auth
-    'auth.login': 'Login',
-    'auth.signup': 'Sign Up',
-    'auth.email': 'Email',
-    'auth.password': 'Password',
-    'auth.confirm_password': 'Confirm Password',
-    'auth.full_name': 'Full Name',
-    'auth.phone': 'Phone',
-    'auth.sign_in': 'Sign In',
-    'auth.create_account': 'Create Account',
-    'auth.have_account': 'Already have an account?',
-    'auth.no_account': "Don't have an account?",
-    'auth.login_error': 'Invalid email or password',
-    'auth.signup_error': 'Failed to create account',
-    'auth.signup_success': 'Account created successfully!',
-
-    // Helper Settings
-    'helper_settings.title': 'Helper Settings',
-    'helper_settings.profile': 'Profile Information',
-    'helper_settings.upload_photo': 'Upload Photo',
-    'helper_settings.display_name': 'Display Name',
-    'helper_settings.enter_name': 'Enter your name',
-    'helper_settings.privacy_level': 'Privacy Level',
-    'helper_settings.public': 'Public - Show my real name',
-    'helper_settings.nickname_only': 'Nickname only - Show first name only',
-    'helper_settings.anonymous': 'Anonymous - Don\'t show my name',
-    'helper_settings.availability': 'Weekly Availability',
-    'helper_settings.day': 'Day',
-    'helper_settings.from': 'From',
-    'helper_settings.to': 'To',
-    'helper_settings.actions': 'Actions',
-    'helper_settings.add_slot': 'Add Time Slot',
-    'helper_settings.quiet_hours': 'Quiet Hours',
-    'helper_settings.quiet_start': 'Start Time',
-    'helper_settings.quiet_end': 'End Time',
-    'helper_settings.skills': 'Skills & Interests',
-    'helper_settings.target_populations': 'Target Populations',
-    'helper_settings.cancel': 'Cancel',
-    'helper_settings.save': 'Save Settings',
-    'helper_settings.saving': 'Saving...',
-    'helper_settings.success': 'Success',
-    'helper_settings.settings_updated': 'Your helper settings have been updated successfully',
-    'helper_settings.error': 'Error',
-    'helper_settings.save_failed': 'Failed to save settings. Please check your connection.',
-    'helper_settings.skills_required': 'Please select at least one skill',
-  },
-  he: {
-    'app.title': 'דואג לך',
-    'app.logout': 'התנתק',
-    
-    // Home page
-    'home.hero.title': 'רשת הדאגה הקהילתית',
-    'home.hero.subtitle': 'מחברים בין מי שצריך עזרה למי שרוצה לעזור',
-    'home.get_started': 'בואו נתחיל', 
-    'home.sign_in': 'התחבר',
-    'home.stats.today': 'עזרו היום',
-    'home.stats.week': 'עזרו השבוע',
-    'home.stats.month': 'עזרו החודש', 
-    'home.stats.all_time': 'סה"כ בקשות עזרה',
+    // Home Page - Not Logged In
+    'home.hero.title': 'Care4U',
+    'home.hero.subtitle': 'Connecting people who need help with those who care to help - instantly, locally, and completely free.',
+    'home.get_started': 'Get Started',
+    'home.sign_in': 'Sign In',
+    'home.stats.today': 'Helps Today',
+    'home.stats.week': 'This Week',
+    'home.stats.month': 'This Month',
+    'home.stats.all_time': 'All Time',
     
     // Features
-    'features.need_help.title': 'צריך עזרה?',
-    'features.need_help.description': 'קבל סיוע ממתנדבים מאומתים בקהילה',
-    'features.need_help.grocery': '🛒 קניות מכולת',
-    'features.need_help.transport': '🚗 הסעות',
-    'features.need_help.companion': '👥 ליווי',
-    'features.need_help.tech': '💻 תמיכה טכנית',
-    'features.want_help.title': 'רוצה לעזור?',
-    'features.want_help.description': 'הצטרף לקהילת המתנדבים שלנו ועשה שינוי',
-    'features.want_help.availability': '⏰ קבע זמינות',
-    'features.want_help.skills': '🎯 שתף כישורים',
-    'features.want_help.local': '📍 עזור מקומית',
-    'features.want_help.community': '❤️ בנה קהילה',
+    'features.need_help.title': 'Need Help?',
+    'features.need_help.description': 'Post your request and get matched with nearby volunteers who can assist you.',
+    'features.need_help.grocery': '• Grocery shopping & errands',
+    'features.need_help.transport': '• Transportation assistance',
+    'features.need_help.companion': '• Companionship & support',
+    'features.need_help.tech': '• Technical help',
     
-    // Roles
-    'role.need_help': 'צריך עזרה',
-    'role.want_to_help': 'רוצה לעזור',
-    'role.admin': 'מנהל',
+    'features.want_help.title': 'Want to Help?',
+    'features.want_help.description': 'Browse help requests in your area and make a difference in someone\'s day.',
+    'features.want_help.availability': '• Set your availability',
+    'features.want_help.skills': '• Choose your skills',
+    'features.want_help.local': '• Get matched locally',
+    'features.want_help.community': '• Build community',
+    
+    // Seeker Mode
+    'seeker.my_requests': 'My Requests',
+    'seeker.new_request': 'New Request',
+    'seeker.interested_helpers': 'Interested Helpers',
+    'seeker.view_profile': 'View Profile',
+    'seeker.no_interested': 'No one has shown interest yet',
+    
+    // Helper Mode
+    'helper.help_feed': 'Help Feed',
+    
+    // Help Request Card
+    'request.interested': 'interested',
+    'request.i_can_help': 'I can help',
+    'request.take_request': 'Take Request',
+    'request.chat': 'Chat',
+    'request.mark_complete': 'Mark Complete',
+    'request.away': 'away',
+    'request.ago': 'ago',
+    'request.hours_ago': 'hours ago',
+    'request.minutes_ago': 'minutes ago',
+    'request.days_ago': 'days ago',
+    
+    // Status
+    'status.active': 'Active',
+    'status.matched': 'Matched',
+    'status.completed': 'Completed',
+    
+    // Categories
+    'category.Shopping': 'Shopping',
+    'category.Transportation': 'Transportation',
+    'category.Moving': 'Moving',
+    'category.Technology': 'Technology',
+    'category.Companionship': 'Companionship',
+    
+    // Profile
+    'profile.title': 'Profile',
+    'profile.basic_info': 'Basic Information',
+    'profile.full_name': 'Full Name',
+    'profile.phone': 'Phone',
+    'profile.privacy_level': 'Privacy Level',
+    'profile.member_since': 'Member since',
+    'profile.availability': 'Availability',
+    'profile.available_days': 'Available Days:',
+    'profile.hours': 'Hours:',
+    'profile.notifications': 'Notifications:',
+    'profile.additional_info': 'Additional Information',
+    'profile.population_group': 'Population Group:',
+    'profile.special_needs': 'Special Needs:',
+    'profile.activity_stats': 'Activity Stats',
+    'profile.helps_given': 'Helps Given',
+    'profile.helps_received': 'Helps Received',
+    'profile.average_rating': 'Average Rating',
+    'profile.community_points': 'Community Points',
+    'profile.save_changes': 'Save Changes',
+    'profile.cancel': 'Cancel',
+    'profile.history': 'Help History',
+    'profile.reviews': 'Reviews & Ratings',
+    'profile.no_reviews': 'No reviews yet',
+    'profile.verified': 'Verified',
+    'profile.pending': 'Pending',
+    'profile.unverified': 'Unverified',
+    
+    // Days
+    'day.Sunday': 'Sunday',
+    'day.Monday': 'Monday',
+    'day.Tuesday': 'Tuesday',
+    'day.Wednesday': 'Wednesday',
+    'day.Thursday': 'Thursday',
+    'day.Friday': 'Friday',
+    'day.Saturday': 'Saturday',
+    
+    // Privacy Levels
+    'privacy.none': 'Full Profile Visible',
+    'privacy.partial': 'Partial Anonymity',
+    'privacy.full': 'Full Anonymity',
+    
+    // Login
+    'login.title': 'Sign in to your account',
+    'login.email': 'Email',
+    'login.password': 'Password',
+    'login.email_placeholder': 'Enter your email',
+    'login.password_placeholder': 'Enter your password',
+    'login.sign_in': 'Sign In',
+    'login.signing_in': 'Signing in...',
+    'login.no_account': 'Don\'t have an account?',
+    'login.sign_up': 'Sign up',
+    'login.demo_accounts': 'Demo accounts:',
+    'login.demo_seeker': 'Demo Seeker',
+    'login.demo_helper': 'Demo Helper',
+    'login.demo_admin': 'Demo Admin',
+    
+    // Toast Messages
+    'toast.welcome_back': 'Welcome back!',
+    'toast.login_success': 'You\'ve been successfully logged in.',
+    'toast.login_failed': 'Login failed',
+    'toast.invalid_credentials': 'Invalid email or password.',
+    'toast.error': 'Error',
+    'toast.something_wrong': 'Something went wrong. Please try again.',
+    'toast.interest_expressed': 'Interest expressed!',
+    'toast.interest_description': 'The person who needs help has been notified.',
+    'toast.request_taken': 'Request taken!',
+    'toast.request_taken_description': 'You\'ve committed to helping. Please contact the person who needs help.',
+    'toast.chat_opened': 'Chat opened',
+    'toast.chat_description': 'You can now chat with the other person.',
+    'toast.profile_updated': 'Profile updated!',
+    'toast.profile_updated_description': 'Your changes have been saved successfully.',
+  },
+  he: {
+    // Header
+    'app.title': 'דואג לך',
+    'app.logout': 'התנתק',
+    'app.profile': 'פרופיל',
     
     // Navigation
     'nav.home': 'בית',
     'nav.requests': 'הבקשות שלי',
-    'nav.help_feed': 'פיד עזרה',
+    'nav.help_feed': 'עזרות זמינות',
     'nav.profile': 'פרופיל',
-    'nav.admin': 'פאנל ניהול',
+    'nav.admin': 'ניהול',
+    'nav.language': 'שפה',
     
-    // Seeker
-    'seeker.my_requests': 'בקשות העזרה שלי',
+    // Role Switcher
+    'role.need_help': 'צריך עזרה',
+    'role.want_to_help': 'רוצה לעזור',
+    'role.admin': 'ניהול',
+    
+    // Home Page - Not Logged In
+    'home.hero.title': 'דואג לך',
+    'home.hero.subtitle': 'מחבר בין אנשים שצריכים עזרה לאלה שאכפת להם לעזור - מיידי, מקומי וחינם לחלוטין.',
+    'home.get_started': 'התחל עכשיו',
+    'home.sign_in': 'התחבר',
+    'home.stats.today': 'עזרות היום',
+    'home.stats.week': 'השבוע',
+    'home.stats.month': 'החודש',
+    'home.stats.all_time': 'מתמיד',
+    
+    // Features
+    'features.need_help.title': 'צריך עזרה?',
+    'features.need_help.description': 'פרסם את הבקשה שלך והתאמה עם מתנדבים בקרבתך שיכולים לסייע לך.',
+    'features.need_help.grocery': '• קניות ומשימות',
+    'features.need_help.transport': '• סיוע בהסעות',
+    'features.need_help.companion': '• ליווי ותמיכה',
+    'features.need_help.tech': '• עזרה טכנית',
+    
+    'features.want_help.title': 'רוצה לעזור?',
+    'features.want_help.description': 'עיין בבקשות עזרה באזורך ועשה הבדל ביומו של מישהו.',
+    'features.want_help.availability': '• קבע את הזמינות שלך',
+    'features.want_help.skills': '• בחר את הכישורים שלך',
+    'features.want_help.local': '• התאמה מקומית',
+    'features.want_help.community': '• בניית קהילה',
+    
+    // Seeker Mode
+    'seeker.my_requests': 'הבקשות שלי',
     'seeker.new_request': 'בקשה חדשה',
+    'seeker.interested_helpers': 'מתנדבים מעוניינים',
+    'seeker.view_profile': 'צפה בפרופיל',
+    'seeker.no_interested': 'עדיין אף אחד לא הביע עניין',
     
-    // Helper
-    'helper.help_feed': 'בקשות עזרה זמינות',
+    // Helper Mode
+    'helper.help_feed': 'עזרות זמינות',
     
     // Help Request Card
-    'help_request.express_interest': 'הבע עניין',
-    'help_request.chat': 'צ\'אט',
-    'help_request.take': 'קח בקשה',
-    'help_request.interested_helpers': 'מתנדבים מעוניינים',
-    'help_request.view_profile': 'צפה בפרופיל',
-    'help_request.rating': 'דירוג',
-    'help_request.distance': 'מרחק',
-    'help_request.matches': 'התאמות',
-    'help_request.active': 'פעיל',
-    'help_request.matched': 'הותאם',
-    'help_request.completed': 'הושלם',
-    'help_request.cancelled': 'בוטל',
+    'request.interested': 'מעוניינים',
+    'request.i_can_help': 'אני יכול לעזור',
+    'request.take_request': 'קח בקשה',
+    'request.chat': 'צ\'אט',
+    'request.mark_complete': 'סמן כהושלם',
+    'request.away': 'מרחק',
+    'request.ago': 'לפני',
+    'request.hours_ago': 'שעות',
+    'request.minutes_ago': 'דקות',
+    'request.days_ago': 'ימים',
     
-    // Create Help Request
-    'create_request.title': 'צור בקשת עזרה',
-    'create_request.request_title': 'כותרת',
-    'create_request.request_title_placeholder': 'איזה עזרה אתה צריך?',
-    'create_request.description': 'תיאור',
-    'create_request.description_placeholder': 'אנא תאר איזה עזרה אתה צריך...',
-    'create_request.category': 'קטגוריה',
-    'create_request.select_category': 'בחר קטגוריה',
-    'create_request.urgency': 'דחיפות',
-    'create_request.low': 'נמוך',
-    'create_request.medium': 'בינוני',
-    'create_request.high': 'גבוה',
-    'create_request.location': 'מיקום',
-    'create_request.location_placeholder': 'איפה אתה צריך עזרה?',
-    'create_request.preferred_time': 'זמן מועדף',
-    'create_request.cancel': 'בטל',
-    'create_request.submit': 'שלח בקשה',
+    // Status
+    'status.active': 'פעיל',
+    'status.matched': 'הותאם',
+    'status.completed': 'הושלם',
     
-    // User Profile
-    'profile.title': 'פרופיל משתמש',
-    'profile.edit_profile': 'ערוך פרופיל',
+    // Categories
+    'category.Shopping': 'קניות',
+    'category.Transportation': 'הסעות',
+    'category.Moving': 'העברת דירה',
+    'category.Technology': 'טכנולוגיה',
+    'category.Companionship': 'ליווי',
+    
+    // Profile
+    'profile.title': 'פרופיל',
+    'profile.basic_info': 'מידע בסיסי',
     'profile.full_name': 'שם מלא',
-    'profile.email': 'אימייל',
     'profile.phone': 'טלפון',
-    'profile.location': 'מיקום',
+    'profile.privacy_level': 'רמת פרטיות',
     'profile.member_since': 'חבר מאז',
-    'profile.verification_status': 'סטטוס אימות',
+    'profile.availability': 'זמינות',
+    'profile.available_days': 'ימים זמינים:',
+    'profile.hours': 'שעות:',
+    'profile.notifications': 'התראות:',
+    'profile.additional_info': 'מידע נוסף',
+    'profile.population_group': 'קבוצת אוכלוסין:',
+    'profile.special_needs': 'צרכים מיוחדים:',
+    'profile.activity_stats': 'סטטיסטיקות פעילות',
+    'profile.helps_given': 'עזרות שנתן',
+    'profile.helps_received': 'עזרות שקיבל',
+    'profile.average_rating': 'דירוג ממוצע',
+    'profile.community_points': 'נקודות קהילה',
+    'profile.save_changes': 'שמור שינויים',
+    'profile.cancel': 'ביטול',
+    'profile.history': 'היסטוריית עזרה',
+    'profile.reviews': 'ביקורות ודירוגים',
+    'profile.no_reviews': 'עדיין אין ביקורות',
     'profile.verified': 'מאומת',
     'profile.pending': 'בהמתנה',
-    'profile.roles': 'תפקידים',
-    'profile.overview': 'סקירה',
-    'profile.history': 'היסטוריה',
-    'profile.reviews': 'ביקורות',
-    'profile.help_provided': 'עזרה שניתנה',
-    'profile.help_received': 'עזרה שהתקבלה',
-    'profile.average_rating': 'דירוג ממוצע',
-    'profile.total_reviews': 'סך הביקורות',
-    'profile.recent_activity': 'פעילות אחרונה',
-    'profile.no_activity': 'אין פעילות אחרונה',
-    'profile.no_reviews': 'אין ביקורות עדיין',
-    'profile.back': 'חזור',
+    'profile.unverified': 'לא מאומת',
     
-    // Auth
-    'auth.login': 'התחבר',
-    'auth.signup': 'הרשם',
-    'auth.email': 'אימייל',
-    'auth.password': 'סיסמה',
-    'auth.confirm_password': 'אשר סיסמה',
-    'auth.full_name': 'שם מלא',
-    'auth.phone': 'טלפון',
-    'auth.sign_in': 'היכנס',
-    'auth.create_account': 'צור חשבון',
-    'auth.have_account': 'כבר יש לך חשבון?',
-    'auth.no_account': 'אין לך חשבון?',
-    'auth.login_error': 'אימייל או סיסמה שגויים',
-    'auth.signup_error': 'נכשל ביצירת חשבון',
-    'auth.signup_success': 'חשבון נוצר בהצלחה!',
-
-    // Helper Settings
-    'helper_settings.title': 'הגדרות מתנדב',
-    'helper_settings.profile': 'פרטי פרופיל',
-    'helper_settings.upload_photo': 'העלה תמונה',
-    'helper_settings.display_name': 'שם תצוגה',
-    'helper_settings.enter_name': 'הכנס את שמך',
-    'helper_settings.privacy_level': 'רמת פרטיות',
-    'helper_settings.public': 'ציבורי - הצג את שמי האמיתי',
-    'helper_settings.nickname_only': 'כינוי בלבד - הצג רק שם פרטי',
-    'helper_settings.anonymous': 'אנונימי - אל תציג את שמי',
-    'helper_settings.availability': 'זמינות שבועית',
-    'helper_settings.day': 'יום',
-    'helper_settings.from': 'מ-',
-    'helper_settings.to': 'עד',
-    'helper_settings.actions': 'פעולות',
-    'helper_settings.add_slot': 'הוסף חלון זמן',
-    'helper_settings.quiet_hours': 'שעות שקט',
-    'helper_settings.quiet_start': 'שעת התחלה',
-    'helper_settings.quiet_end': 'שעת סיום',
-    'helper_settings.skills': 'כישורים ותחומי עניין',
-    'helper_settings.target_populations': 'אוכלוסיות יעד',
-    'helper_settings.cancel': 'בטל',
-    'helper_settings.save': 'שמור הגדרות',
-    'helper_settings.saving': 'שומר...',
-    'helper_settings.success': 'הצלחה',
-    'helper_settings.settings_updated': 'הגדרות המתנדב עודכנו בהצלחה',
-    'helper_settings.error': 'שגיאה',
-    'helper_settings.save_failed': 'נכשל בשמירת ההגדרות. אנא בדוק את הקישור שלך.',
-    'helper_settings.skills_required': 'אנא בחר לפחות כישור אחד',
+    // Days
+    'day.Sunday': 'ראשון',
+    'day.Monday': 'שני',
+    'day.Tuesday': 'שלישי',
+    'day.Wednesday': 'רביעי',
+    'day.Thursday': 'חמישי',
+    'day.Friday': 'שישי',
+    'day.Saturday': 'שבת',
+    
+    // Privacy Levels
+    'privacy.none': 'פרופיל מלא גלוי',
+    'privacy.partial': 'אנונימיות חלקית',
+    'privacy.full': 'אנונימיות מלאה',
+    
+    // Login
+    'login.title': 'התחבר לחשבון שלך',
+    'login.email': 'אימייל',
+    'login.password': 'סיסמה',
+    'login.email_placeholder': 'הכנס את האימייל שלך',
+    'login.password_placeholder': 'הכנס את הסיסמה שלך',
+    'login.sign_in': 'התחבר',
+    'login.signing_in': 'מתחבר...',
+    'login.no_account': 'אין לך חשבון?',
+    'login.sign_up': 'הירשם',
+    'login.demo_accounts': 'חשבונות דמו:',
+    'login.demo_seeker': 'מבקש עזרה דמו',
+    'login.demo_helper': 'מתנדב דמו',
+    'login.demo_admin': 'מנהל דמו',
+    
+    // Toast Messages
+    'toast.welcome_back': 'ברוך שובך!',
+    'toast.login_success': 'התחברת בהצלחה.',
+    'toast.login_failed': 'ההתחברות נכשלה',
+    'toast.invalid_credentials': 'אימייל או סיסמה שגויים.',
+    'toast.error': 'שגיאה',
+    'toast.something_wrong': 'משהו השתבש. אנא נסה שוב.',
+    'toast.interest_expressed': 'עניין הובע!',
+    'toast.interest_description': 'האדם שצריך עזרה קיבל התראה.',
+    'toast.request_taken': 'הבקשה נלקחה!',
+    'toast.request_taken_description': 'התחייבת לעזור. אנא צור קשר עם האדם שצריך עזרה.',
+    'toast.chat_opened': 'צ\'אט נפתח',
+    'toast.chat_description': 'עכשיו אתה יכול לצ\'אט עם האדם השני.',
+    'toast.profile_updated': 'הפרופיל עודכן!',
+    'toast.profile_updated_description': 'השינויים שלך נשמרו בהצלחה.',
   }
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'he')) {
+      setLanguage(savedLanguage);
+    }
+  }, []);
+
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+    // Update document direction for Hebrew
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  };
 
   const t = (key: string): string => {
     return translations[language][key] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      <div className={language === 'he' ? 'rtl' : 'ltr'} dir={language === 'he' ? 'rtl' : 'ltr'}>
-        {children}
-      </div>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+      {children}
     </LanguageContext.Provider>
   );
 };

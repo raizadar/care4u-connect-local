@@ -5,7 +5,6 @@ import { Card } from '@/components/ui/card';
 import { Menu, Home, List, Heart, User, Settings, Globe, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { UserRole } from '@/lib/auth';
-import { useNavigate } from 'react-router-dom';
 
 interface NavigationProps {
   userRole: UserRole;
@@ -18,7 +17,6 @@ interface NavigationProps {
 export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, userRoles = [] }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
-  const navigate = useNavigate();
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'he' : 'en');
@@ -85,24 +83,14 @@ export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, us
             )}
 
             {userRole === 'helper' && (
-              <>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => handleMenuItemClick(() => {})}
-                >
-                  <Heart className="w-5 h-5 mr-3" />
-                  {t('nav.help_feed')}
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => handleMenuItemClick(() => navigate('/helper-settings'))}
-                >
-                  <Settings className="w-5 h-5 mr-3" />
-                  {t('helper_settings.title')}
-                </Button>
-              </>
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => handleMenuItemClick(() => {})}
+              >
+                <Heart className="w-5 h-5 mr-3" />
+                {t('nav.help_feed')}
+              </Button>
             )}
 
             <Button
