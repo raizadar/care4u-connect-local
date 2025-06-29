@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,12 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getCurrentUser, User } from '@/lib/auth';
-import { ArrowLeft, Upload, Plus, X, Clock, User as UserIcon, Settings, Heart } from 'lucide-react';
+import { ArrowLeft, Plus, X, Clock, User as UserIcon, Settings, Heart } from 'lucide-react';
+import ProfilePictureUpload from '@/components/ProfilePictureUpload';
+import HierarchicalSkillSelector from '@/components/HierarchicalSkillSelector';
 
 interface AvailabilitySlot {
   id: string;
@@ -37,16 +38,7 @@ const HelperSettings = () => {
   });
   const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
 
-  // Skills and populations data
-  const skills = [
-    { id: 'transport', labelEN: 'Transportation', labelHE: 'הסעות' },
-    { id: 'shopping', labelEN: 'Shopping', labelHE: 'קניות' },
-    { id: 'medical', labelEN: 'Medical Support', labelHE: 'ליווי רפואי' },
-    { id: 'tech', labelEN: 'Technology Help', labelHE: 'עזרה טכנולוגית' },
-    { id: 'companionship', labelEN: 'Companionship', labelHE: 'חברותא' },
-    { id: 'household', labelEN: 'Household Tasks', labelHE: 'עבודות בית' }
-  ];
-
+  // Target populations data
   const populations = [
     { id: 'elderly', labelEN: 'Elderly', labelHE: 'קשישים' },
     { id: 'disabled', labelEN: 'People with Disabilities', labelHE: 'אנשים עם מוגבלות' },
@@ -88,7 +80,7 @@ const HelperSettings = () => {
       targetGroups: []
     });
 
-    // Initialize with default availability slot if none exists
+    // Initialize availability slots
     if (currentUser.availability) {
       const slots = currentUser.availability.days.map((day, index) => ({
         id: `slot-${index}`,
@@ -109,15 +101,6 @@ const HelperSettings = () => {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSkillToggle = (skillId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      helperSkills: prev.helperSkills.includes(skillId)
-        ? prev.helperSkills.filter(id => id !== skillId)
-        : [...prev.helperSkills, skillId]
-    }));
   };
 
   const handlePopulationToggle = (popId: string) => {
@@ -188,7 +171,7 @@ const HelperSettings = () => {
 
     setIsLoading(true);
     try {
-      // Simulate API call - in real app this would be updateHelperSettings mutation
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Update user data
@@ -254,17 +237,12 @@ const HelperSettings = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Avatar */}
-              <div className="flex items-center gap-4">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage src={formData.photoURL} />
-                  <AvatarFallback>{formData.fullName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <Button variant="outline" size="sm">
-                  <Upload className="w-4 h-4 mr-2" />
-                  {t('helper_settings.upload_photo')}
-                </Button>
-              </div>
+              {/* Profile Picture Upload */}
+              <ProfilePictureUpload
+                currentPhotoURL={formData.photoURL}
+                fullName={formData.fullName}
+                onPhotoChange={(photoURL) => handleInputChange('photoURL', photoURL)}
+              />
 
               {/* Name */}
               <div>
@@ -301,6 +279,12 @@ const HelperSettings = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Skills Section - Now using hierarchical selector */}
+          <HierarchicalSkillSelector
+            selectedSkills={formData.helperSkills}
+            onSkillsChange={(skills) => handleInputChange('helperSkills', skills)}
+          />
 
           {/* Availability Section */}
           <Card>
@@ -392,30 +376,6 @@ const HelperSettings = () => {
             </CardContent>
           </Card>
 
-          {/* Skills */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="w-5 h-5" />
-                {t('helper_settings.skills')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {skills.map((skill) => (
-                  <Badge
-                    key={skill.id}
-                    variant={formData.helperSkills.includes(skill.id) ? "default" : "outline"}
-                    className="cursor-pointer"
-                    onClick={() => handleSkillToggle(skill.id)}
-                  >
-                    {language === 'he' ? skill.labelHE : skill.labelEN}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Target Populations */}
           <Card>
             <CardHeader>
@@ -425,16 +385,20 @@ const HelperSettings = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-1 gap-2">
                 {populations.map((pop) => (
-                  <Badge
-                    key={pop.id}
-                    variant={formData.targetGroups.includes(pop.id) ? "default" : "outline"}
-                    className="cursor-pointer"
-                    onClick={() => handlePopulationToggle(pop.id)}
-                  >
-                    {language === 'he' ? pop.labelHE : pop.labelEN}
-                  </Badge>
+                  <div key={pop.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded">
+                    <input
+                      type="checkbox"
+                      id={pop.id}
+                      checked={formData.targetGroups.includes(pop.id)}
+                      onChange={() => handlePopulationToggle(pop.id)}
+                      className="w-4 h-4"
+                    />
+                    <label htmlFor={pop.id} className="cursor-pointer flex-1">
+                      {language === 'he' ? pop.labelHE : pop.labelEN}
+                    </label>
+                  </div>
                 ))}
               </div>
             </CardContent>
