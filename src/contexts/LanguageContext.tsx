@@ -160,40 +160,35 @@ const translations = {
     'toast.profile_updated': 'Profile updated!',
     'toast.profile_updated_description': 'Your changes have been saved successfully.',
     
-    helper_settings: {
-      title: "Helper Settings",
-      profile: "Profile",
-      upload_photo: "Upload Photo",
-      display_name: "Display Name",
-      name_placeholder: "Enter your name",
-      privacy_level: "Privacy Level",
-      public: "Public - Show real name",
-      nickname_only: "Nickname only",
-      anonymous: "Anonymous",
-      availability: "Availability",
-      add_slot: "Add Time Slot",
-      quiet_hours: "Quiet Hours",
-      quiet_start: "Start Time",
-      quiet_end: "End Time",
-      skills: "Skills & Interests",
-      target_populations: "Target Populations",
-      settings_updated: "Settings Updated",
-      changes_saved: "Your changes have been saved successfully",
-      save_error: "Failed to save settings. Please check your connection.",
-      skills_required: "Please select at least one skill",
-      invalid_time_range: "End time must be after start time"
-    },
+    // Helper Settings
+    'helper_settings.title': 'Helper Settings',
+    'helper_settings.profile': 'Profile',
+    'helper_settings.upload_photo': 'Upload Photo',
+    'helper_settings.display_name': 'Display Name',
+    'helper_settings.name_placeholder': 'Enter your name',
+    'helper_settings.privacy_level': 'Privacy Level',
+    'helper_settings.public': 'Public - Show real name',
+    'helper_settings.nickname_only': 'Nickname only',
+    'helper_settings.anonymous': 'Anonymous',
+    'helper_settings.availability': 'Availability',
+    'helper_settings.add_slot': 'Add Time Slot',
+    'helper_settings.quiet_hours': 'Quiet Hours',
+    'helper_settings.quiet_start': 'Start Time',
+    'helper_settings.quiet_end': 'End Time',
+    'helper_settings.skills': 'Skills & Interests',
+    'helper_settings.target_populations': 'Target Populations',
+    'helper_settings.settings_updated': 'Settings Updated',
+    'helper_settings.changes_saved': 'Your changes have been saved successfully',
+    'helper_settings.save_error': 'Failed to save settings. Please check your connection.',
+    'helper_settings.skills_required': 'Please select at least one skill',
+    'helper_settings.invalid_time_range': 'End time must be after start time',
     
-    validation: {
-      error: "Error",
-      name_min_length: "Name must be at least 2 characters long"
-    },
+    'validation.error': 'Error',
+    'validation.name_min_length': 'Name must be at least 2 characters long',
     
-    common: {
-      save: "Save",
-      cancel: "Cancel",
-      saving: "Saving..."
-    }
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.saving': 'Saving...'
   },
   he: {
     // Header
@@ -346,40 +341,35 @@ const translations = {
     'toast.profile_updated': 'הפרופיל עודכן!',
     'toast.profile_updated_description': 'השינויים שלך נשמרו בהצלחה.',
     
-    helper_settings: {
-      title: "הגדרות מתנדב",
-      profile: "פרופיל",
-      upload_photo: "העלה תמונה",
-      display_name: "שם להצגה",
-      name_placeholder: "הזן את שמך",
-      privacy_level: "רמת פרטיות",
-      public: "ציבורי - הצג שם אמיתי",
-      nickname_only: "כינוי בלבד",
-      anonymous: "אנונימי",
-      availability: "זמינות",
-      add_slot: "הוסף משבצת זמן",
-      quiet_hours: "שעות שקט",
-      quiet_start: "שעת התחלה",
-      quiet_end: "שעת סיום",
-      skills: "כישורים ותחומי עניין",
-      target_populations: "אוכלוסיות יעד",
-      settings_updated: "ההגדרות עודכנו",
-      changes_saved: "השינויים נשמרו בהצלחה",
-      save_error: "שמירת ההגדרות נכשלה. אנא בדוק את החיבור שלך.",
-      skills_required: "אנא בחר לפחות כישור אחד",
-      invalid_time_range: "שעת הסיום חייבת להיות אחרי שעת ההתחלה"
-    },
+    // Helper Settings
+    'helper_settings.title': 'הגדרות מתנדב',
+    'helper_settings.profile': 'פרופיל',
+    'helper_settings.upload_photo': 'העלה תמונה',
+    'helper_settings.display_name': 'שם להצגה',
+    'helper_settings.name_placeholder': 'הזן את שמך',
+    'helper_settings.privacy_level': 'רמת פרטיות',
+    'helper_settings.public': 'ציבורי - הצג שם אמיתי',
+    'helper_settings.nickname_only': 'כינוי בלבד',
+    'helper_settings.anonymous': 'אנונימי',
+    'helper_settings.availability': 'זמינות',
+    'helper_settings.add_slot': 'הוסף משבצת זמן',
+    'helper_settings.quiet_hours': 'שעות שקט',
+    'helper_settings.quiet_start': 'שעת התחלה',
+    'helper_settings.quiet_end': 'שעת סיום',
+    'helper_settings.skills': 'כישורים ותחומי עניין',
+    'helper_settings.target_populations': 'אוכלוסיות יעד',
+    'helper_settings.settings_updated': 'ההגדרות עודכנו',
+    'helper_settings.changes_saved': 'השינויים נשמרו בהצלחה',
+    'helper_settings.save_error': 'שמירת ההגדרות נכשלה. אנא בדוק את החיבור שלך.',
+    'helper_settings.skills_required': 'אנא בחר לפחות כישור אחד',
+    'helper_settings.invalid_time_range': 'שעת הסיום חייבת להיות אחרי שעת ההתחלה',
     
-    validation: {
-      error: "שגיאה",
-      name_min_length: "השם חייב להכיל לפחות 2 תווים"
-    },
+    'validation.error': 'שגיאה',
+    'validation.name_min_length': 'השם חייב להכיל לפחות 2 תווים',
     
-    common: {
-      save: "שמור",
-      cancel: "ביטול",
-      saving: "שומר..."
-    }
+    'common.save': 'שמור',
+    'common.cancel': 'ביטול',
+    'common.saving': 'שומר...'
   }
 };
 

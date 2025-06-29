@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Menu, Home, List, Heart, User, Settings, Globe, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { UserRole } from '@/lib/auth';
@@ -96,7 +95,7 @@ export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, us
             <Button
               variant="ghost"
               className="w-full justify-start"
-              onClick={() => handleMenuItemClick(onShowProfile)}
+              onClick={() => handleMenuItemClick(() => window.location.href = '/helper-profile')}
             >
               <User className="w-5 h-5 mr-3" />
               {t('nav.profile')}
