@@ -17,7 +17,7 @@ interface HelperProfileProps {
 // Mock helper data for display
 const mockHelper: UserType = {
   id: '2',
-  fullName: 'David Levi',
+  fullName: 'דוד לוי',
   email: 'helper@demo.com',
   phone: '+972-50-234-5678',
   photoURL: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
@@ -38,16 +38,17 @@ const mockHelper: UserType = {
 };
 
 // Mock skills and target populations
-const helperSkills = ['transport', 'shopping', 'tech', 'companionship'];
+const helperSkills = ['transport_car', 'transport_medical', 'tech_computer', 'social_companionship'];
 const targetGroups = ['elderly', 'disabled', 'families'];
 
 const skillsData = [
-  { id: 'transport', labelEN: 'Transportation', labelHE: 'הסעות' },
-  { id: 'shopping', labelEN: 'Shopping', labelHE: 'קניות' },
-  { id: 'medical', labelEN: 'Medical Support', labelHE: 'ליווי רפואי' },
-  { id: 'tech', labelEN: 'Technology Help', labelHE: 'עזרה טכנולוגית' },
-  { id: 'companionship', labelEN: 'Companionship', labelHE: 'חברותא' },
-  { id: 'household', labelEN: 'Household Tasks', labelHE: 'עבודות בית' }
+  { id: 'transport_car', labelEN: 'Car rides', labelHE: 'הסעות ברכב' },
+  { id: 'transport_medical', labelEN: 'Medical appointments', labelHE: 'ליווי לרופא' },
+  { id: 'transport_shopping', labelEN: 'Shopping trips', labelHE: 'הסעות לקניות' },
+  { id: 'tech_computer', labelEN: 'Computer help', labelHE: 'עזרה במחשב' },
+  { id: 'tech_phone', labelEN: 'Smartphone setup', labelHE: 'הגדרת סמארטפון' },
+  { id: 'social_companionship', labelEN: 'Companionship', labelHE: 'חברותא' },
+  { id: 'household_cleaning', labelEN: 'Cleaning', labelHE: 'ניקיון' }
 ];
 
 const populationsData = [
@@ -62,24 +63,30 @@ const populationsData = [
 const mockHelpHistory = [
   {
     id: '1',
-    title: 'Help with grocery shopping',
+    title: 'עזרה בקניות מכולת',
+    titleEN: 'Help with grocery shopping',
     date: new Date('2024-01-15'),
     rating: 5,
-    review: 'Very helpful and kind person!'
+    review: 'אדם מאוד מועיל ואדיב!',
+    reviewEN: 'Very helpful and kind person!'
   },
   {
     id: '2',
-    title: 'Tech support for elderly',
+    title: 'תמיכה טכנית לקשישים',
+    titleEN: 'Tech support for elderly',
     date: new Date('2024-01-12'),
     rating: 5,
-    review: 'Patient and knowledgeable!'
+    review: 'סבלני ובעל ידע!',
+    reviewEN: 'Patient and knowledgeable!'
   },
   {
     id: '3',
-    title: 'Transportation to medical appointment',
+    title: 'הסעה לתור רפואי',
+    titleEN: 'Transportation to medical appointment',
     date: new Date('2024-01-08'),
     rating: 4,
-    review: 'Reliable and on time.'
+    review: 'אמין והגיע בזמן.',
+    reviewEN: 'Reliable and on time.'
   }
 ];
 
@@ -87,27 +94,36 @@ const mockHelpHistory = [
 const mockReviews = [
   {
     id: '1',
-    reviewer: 'Sarah M.',
+    reviewer: 'שרה מ.',
+    reviewerEN: 'Sarah M.',
     rating: 5,
     date: new Date('2024-01-15'),
-    comment: 'Amazing person! Helped me with grocery shopping when I was sick. Very caring and reliable.',
-    helpType: 'Shopping'
+    comment: 'אדם מדהים! עזר לי עם קניות כשהייתי חולה. מאוד אכפתי ואמין.',
+    commentEN: 'Amazing person! Helped me with grocery shopping when I was sick. Very caring and reliable.',
+    helpType: 'קניות',
+    helpTypeEN: 'Shopping'
   },
   {
     id: '2',
-    reviewer: 'Maria K.',
+    reviewer: 'מריה ק.',
+    reviewerEN: 'Maria K.',
     rating: 5,
     date: new Date('2024-01-12'),
-    comment: 'Very patient helping my grandmother with her phone. Highly recommended!',
-    helpType: 'Technology'
+    comment: 'מאוד סבלנית בעזרה לסבתא שלי עם הטלפון. מומלץ מאוד!',
+    commentEN: 'Very patient helping my grandmother with her phone. Highly recommended!',
+    helpType: 'טכנולוגיה',
+    helpTypeEN: 'Technology'
   },
   {
     id: '3',
-    reviewer: 'Abraham L.',
+    reviewer: 'אברהם ל.',
+    reviewerEN: 'Abraham L.',
     rating: 4,
     date: new Date('2024-01-08'),
-    comment: 'Good help with transportation. Showed up on time and was very respectful.',
-    helpType: 'Transportation'
+    comment: 'עזרה טובה בהסעות. הגיע בזמן והיה מאוד מכבד.',
+    commentEN: 'Good help with transportation. Showed up on time and was very respectful.',
+    helpType: 'הסעות',
+    helpTypeEN: 'Transportation'
   }
 ];
 
@@ -165,11 +181,11 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
   const isOwner = currentUser?.id === helper?.id;
 
   if (!helper) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">טוען...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50 p-4" dir={language === 'he' ? 'rtl' : 'ltr'}>
       <div className="container mx-auto max-w-2xl">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
@@ -247,7 +263,7 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
                         </Badge>
                       </div>
                       <p className="text-sm text-gray-500 mt-2">
-                        {t('profile.member_since')} {helper.createdAt.toLocaleDateString()}
+                        {t('profile.member_since')} {helper.createdAt.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')}
                       </p>
                     </div>
                   </div>
@@ -356,9 +372,11 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
                   <div key={help.id} className="border rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
-                        <h4 className="font-medium">{help.title}</h4>
+                        <h4 className="font-medium">
+                          {language === 'he' ? help.title : help.titleEN}
+                        </h4>
                         <p className="text-sm text-gray-600">
-                          {help.date.toLocaleDateString()}
+                          {help.date.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')}
                         </p>
                       </div>
                       <div className="flex items-center">
@@ -366,7 +384,9 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
                       </div>
                     </div>
                     {help.review && (
-                      <p className="text-sm text-gray-700 italic">"{help.review}"</p>
+                      <p className="text-sm text-gray-700 italic">
+                        "{language === 'he' ? help.review : help.reviewEN}"
+                      </p>
                     )}
                   </div>
                 ))}
@@ -388,16 +408,20 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
                     <div key={review.id} className="border rounded-lg p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <p className="font-medium">{review.reviewer}</p>
+                          <p className="font-medium">
+                            {language === 'he' ? review.reviewer : review.reviewerEN}
+                          </p>
                           <p className="text-sm text-gray-600">
-                            {review.date.toLocaleDateString()} • {t(`category.${review.helpType}`)}
+                            {review.date.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')} • {language === 'he' ? review.helpType : review.helpTypeEN}
                           </p>
                         </div>
                         <div className="flex items-center">
                           {renderStars(review.rating)}
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700">"{review.comment}"</p>
+                      <p className="text-sm text-gray-700">
+                        "{language === 'he' ? review.comment : review.commentEN}"
+                      </p>
                     </div>
                   ))
                 ) : (
