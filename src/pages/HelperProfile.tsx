@@ -1,14 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, User, MapPin, Clock, Shield, Star, Heart, MessageSquare, Edit } from 'lucide-react';
+import { ArrowLeft, User, Clock, MessageSquare, Edit } from 'lucide-react';
 import { User as UserType, getCurrentUser } from '@/lib/auth';
 import { useLanguage } from '@/contexts/LanguageContext';
+import BasicInfoCard from '@/components/profile/BasicInfoCard';
+import SkillsCard from '@/components/profile/SkillsCard';
+import TargetPopulationsCard from '@/components/profile/TargetPopulationsCard';
+import AvailabilityCard from '@/components/profile/AvailabilityCard';
+import ActivityStatsCard from '@/components/profile/ActivityStatsCard';
+import HelpHistoryCard from '@/components/profile/HelpHistoryCard';
+import ReviewsCard from '@/components/profile/ReviewsCard';
 
 interface HelperProfileProps {
   isOwnProfile?: boolean;
@@ -40,24 +43,6 @@ const mockHelper: UserType = {
 // Mock skills and target populations
 const helperSkills = ['transport_car', 'transport_medical', 'tech_computer', 'social_companionship'];
 const targetGroups = ['elderly', 'disabled', 'families'];
-
-const skillsData = [
-  { id: 'transport_car', labelEN: 'Car rides', labelHE: 'הסעות ברכב' },
-  { id: 'transport_medical', labelEN: 'Medical appointments', labelHE: 'ליווי לרופא' },
-  { id: 'transport_shopping', labelEN: 'Shopping trips', labelHE: 'הסעות לקניות' },
-  { id: 'tech_computer', labelEN: 'Computer help', labelHE: 'עזרה במחשב' },
-  { id: 'tech_phone', labelEN: 'Smartphone setup', labelHE: 'הגדרת סמארטפון' },
-  { id: 'social_companionship', labelEN: 'Companionship', labelHE: 'חברותא' },
-  { id: 'household_cleaning', labelEN: 'Cleaning', labelHE: 'ניקיון' }
-];
-
-const populationsData = [
-  { id: 'elderly', labelEN: 'Elderly', labelHE: 'קשישים' },
-  { id: 'disabled', labelEN: 'People with Disabilities', labelHE: 'אנשים עם מוגבלות' },
-  { id: 'families', labelEN: 'Families in Need', labelHE: 'משפחות במצוקה' },
-  { id: 'immigrants', labelEN: 'New Immigrants', labelHE: 'עולים חדשים' },
-  { id: 'youth', labelEN: 'Youth at Risk', labelHE: 'נוער במצב סיכון' }
-];
 
 // Mock help history
 const mockHelpHistory = [
@@ -147,37 +132,6 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
     }
   }, [id, isOwnProfile]);
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
-      />
-    ));
-  };
-
-  const getSkillLabel = (skillId: string) => {
-    const skill = skillsData.find(s => s.id === skillId);
-    return skill ? (language === 'he' ? skill.labelHE : skill.labelEN) : skillId;
-  };
-
-  const getPopulationLabel = (popId: string) => {
-    const pop = populationsData.find(p => p.id === popId);
-    return pop ? (language === 'he' ? pop.labelHE : pop.labelEN) : popId;
-  };
-
-  const getVerificationBadge = () => {
-    if (!helper) return null;
-    switch (helper.verificationStatus) {
-      case 'verified':
-        return <Badge className="bg-green-100 text-green-800">{t('profile.verified')}</Badge>;
-      case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-800">{t('profile.pending')}</Badge>;
-      default:
-        return <Badge className="bg-gray-100 text-gray-800">{t('profile.unverified')}</Badge>;
-    }
-  };
-
   const isOwner = currentUser?.id === helper?.id;
 
   if (!helper) {
@@ -238,199 +192,20 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
         <div className="space-y-6">
           {activeTab === 'info' && (
             <>
-              {/* Basic Info Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <User className="w-5 h-5 mr-2" />
-                    {t('profile.basic_info')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage src={helper.photoURL} />
-                      <AvatarFallback>{helper.fullName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold">{helper.fullName}</h3>
-                      <p className="text-gray-600">{helper.email}</p>
-                      <p className="text-gray-600">{helper.phone}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        {getVerificationBadge()}
-                        <Badge variant="outline">
-                          {t('role.want_to_help')}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-500 mt-2">
-                        {t('profile.member_since')} {helper.createdAt.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Skills & Interests */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Heart className="w-5 h-5 mr-2" />
-                    {t('helper_settings.skills')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {helperSkills.map((skillId) => (
-                      <Badge key={skillId} variant="secondary">
-                        {getSkillLabel(skillId)}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Target Populations */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Shield className="w-5 h-5 mr-2" />
-                    {t('helper_settings.target_populations')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {targetGroups.map((popId) => (
-                      <Badge key={popId} variant="outline">
-                        {getPopulationLabel(popId)}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Availability */}
-              {helper.availability && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Clock className="w-5 h-5 mr-2" />
-                      {t('profile.availability')}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <p><strong>{t('profile.available_days')}</strong></p>
-                      <div className="flex flex-wrap gap-2">
-                        {helper.availability.days.map((day) => (
-                          <Badge key={day} variant="outline">
-                            {t(`day.${day}`)}
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-sm text-gray-600 mt-2">
-                        <strong>{t('profile.hours')}</strong> {helper.availability.startTime} - {helper.availability.endTime}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Activity Stats */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Star className="w-5 h-5 mr-2" />
-                    {t('profile.activity_stats')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4 text-center">
-                    <div>
-                      <div className="text-2xl font-bold text-blue-600">12</div>
-                      <div className="text-sm text-gray-600">{t('profile.helps_given')}</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-amber-600">4.8</div>
-                      <div className="text-sm text-gray-600">{t('profile.average_rating')}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <BasicInfoCard helper={helper} />
+              <SkillsCard skills={helperSkills} />
+              <TargetPopulationsCard targetGroups={targetGroups} />
+              <AvailabilityCard helper={helper} />
+              <ActivityStatsCard />
             </>
           )}
 
           {activeTab === 'history' && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Clock className="w-5 h-5 mr-2" />
-                  {t('profile.history')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {mockHelpHistory.map((help) => (
-                  <div key={help.id} className="border rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <h4 className="font-medium">
-                          {language === 'he' ? help.title : help.titleEN}
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          {help.date.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        {renderStars(help.rating)}
-                      </div>
-                    </div>
-                    {help.review && (
-                      <p className="text-sm text-gray-700 italic">
-                        "{language === 'he' ? help.review : help.reviewEN}"
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            <HelpHistoryCard history={mockHelpHistory} />
           )}
 
           {activeTab === 'reviews' && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  {t('profile.reviews')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {mockReviews.length > 0 ? (
-                  mockReviews.map((review) => (
-                    <div key={review.id} className="border rounded-lg p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-medium">
-                            {language === 'he' ? review.reviewer : review.reviewerEN}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {review.date.toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')} • {language === 'he' ? review.helpType : review.helpTypeEN}
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          {renderStars(review.rating)}
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-700">
-                        "{language === 'he' ? review.comment : review.commentEN}"
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-gray-500 py-8">
-                    {t('profile.no_reviews')}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+            <ReviewsCard reviews={mockReviews} />
           )}
         </div>
       </div>
