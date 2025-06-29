@@ -151,12 +151,7 @@ const HierarchicalSkillSelector = ({ selectedSkills, onSkillsChange }: Hierarchi
                 </button>
                 
                 <Checkbox
-                  checked={categoryState === 'checked'}
-                  ref={(el) => {
-                    if (el && categoryState === 'indeterminate') {
-                      el.indeterminate = true;
-                    }
-                  }}
+                  checked={categoryState === 'checked' ? true : categoryState === 'indeterminate' ? 'indeterminate' : false}
                   onCheckedChange={() => toggleCategory_Skills(category)}
                   className="data-[state=indeterminate]:bg-blue-500"
                 />
