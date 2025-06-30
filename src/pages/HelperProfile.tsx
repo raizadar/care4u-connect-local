@@ -119,23 +119,60 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
   const [activeTab, setActiveTab] = useState<'info' | 'history' | 'reviews'>('info');
   const [helper, setHelper] = useState<UserType | null>(null);
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const user = getCurrentUser();
-    setCurrentUser(user);
+    console.log('HelperProfile: useEffect triggered', { isOwnProfile, id });
     
-    if (isOwnProfile || id === user?.id) {
-      setHelper(user);
-    } else {
-      // In a real app, fetch helper data by ID
-      setHelper(mockHelper);
-    }
+    const initializeProfile = () => {
+      try {
+        const user = getCurrentUser();
+        console.log('Current user:', user);
+        setCurrentUser(user);
+        
+        if (isOwnProfile || (user && id === user.id)) {
+          console.log('Loading own profile');
+          setHelper(user);
+        } else if (id) {
+          console.log('Loading profile for ID:', id);
+          // In a real app, fetch helper data by ID
+          setHelper(mockHelper);
+        } else {
+          console.log('No ID provided and not own profile');
+          setHelper(user || mockHelper);
+        }
+      } catch (error) {
+        console.error('Error initializing profile:', error);
+        setHelper(mockHelper);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeProfile();
   }, [id, isOwnProfile]);
 
   const isOwner = currentUser?.id === helper?.id;
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50 flex justify-center items-center" dir={language === 'he' ? 'rtl' : 'ltr'}>
+        <div className="text-xl text-gray-600">טוען...</div>
+      </div>
+    );
+  }
+
   if (!helper) {
-    return <div className="flex justify-center items-center h-screen">טוען...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50 flex justify-center items-center" dir={language === 'he' ? 'rtl' : 'ltr'}>
+        <div className="text-center">
+          <div className="text-xl text-gray-600 mb-4">לא נמצא פרופיל</div>
+          <Button onClick={() => navigate('/')} variant="outline">
+            חזור לדף הבית
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (

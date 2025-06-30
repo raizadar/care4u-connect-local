@@ -25,6 +25,7 @@ const translations: { [key: string]: Translation } = {
   en: {
     app: {
       name: 'Volunteer App',
+      title: 'Community Care Network',
       logout: 'Logout',
     },
     common: {
@@ -96,6 +97,45 @@ const translations: { [key: string]: Translation } = {
       Medical: 'Medical Support',
       Technology: 'Technology',
       Moving: 'Moving',
+    },
+    home: {
+      hero: {
+        title: 'Community Care Network',
+        subtitle: 'Connecting neighbors to help each other with daily tasks and needs'
+      },
+      get_started: 'Get Started',
+      sign_in: 'Sign In',
+      stats: {
+        today: 'Helped Today',
+        week: 'This Week',
+        month: 'This Month',
+        all_time: 'All Time'
+      }
+    },
+    features: {
+      need_help: {
+        title: 'Need Help?',
+        description: 'Get assistance from verified community members',
+        grocery: '• Grocery shopping assistance',
+        transport: '• Transportation to appointments',
+        companion: '• Companionship and social support',
+        tech: '• Technology and digital help'
+      },
+      want_help: {
+        title: 'Want to Help?',
+        description: 'Volunteer your time to help others in your community',
+        availability: '• Set your availability',
+        skills: '• Choose your skills',
+        local: '• Help people nearby',
+        community: '• Build stronger communities'
+      }
+    },
+    seeker: {
+      my_requests: 'My Help Requests',
+      new_request: 'New Request'
+    },
+    helper: {
+      help_feed: 'Available Help Requests'
     },
     toast: {
       profile_updated: 'Profile Updated',
@@ -174,6 +214,7 @@ const translations: { [key: string]: Translation } = {
   he: {
     app: {
       name: 'אפליקציית התנדבות',
+      title: 'רשת דאגה קהילתית',
       logout: 'התנתק',
     },
     common: {
@@ -245,6 +286,45 @@ const translations: { [key: string]: Translation } = {
       Medical: 'תמיכה רפואית',
       Technology: 'טכנולוגיה',
       Moving: 'מעבר דירה',
+    },
+    home: {
+      hero: {
+        title: 'רשת דאגה קהילתית',
+        subtitle: 'מחברים שכנים לעזור זה לזה במשימות ובצרכים יומיומיים'
+      },
+      get_started: 'התחל עכשיו',
+      sign_in: 'התחבר',
+      stats: {
+        today: 'עזרו היום',
+        week: 'השבוע',
+        month: 'החודש',
+        all_time: 'מאז ההתחלה'
+      }
+    },
+    features: {
+      need_help: {
+        title: 'צריך עזרה?',
+        description: 'קבל סיוע מחברי קהילה מאומתים',
+        grocery: '• עזרה בקניות מכולת',
+        transport: '• הסעות לתורים רפואיים',
+        companion: '• חברותא ותמיכה חברתית',
+        tech: '• עזרה טכנולוגית ודיגיטלית'
+      },
+      want_help: {
+        title: 'רוצה לעזור?',
+        description: 'התנדב עם הזמן שלך לעזור לאחרים בקהילה שלך',
+        availability: '• קבע את הזמינות שלך',
+        skills: '• בחר את הכישורים שלך',
+        local: '• עזור לאנשים בקרבת מקום',
+        community: '• בנה קהילות חזקות יותר'
+      }
+    },
+    seeker: {
+      my_requests: 'בקשות העזרה שלי',
+      new_request: 'בקשה חדשה'
+    },
+    helper: {
+      help_feed: 'בקשות עזרה זמינות'
     },
     toast: {
       profile_updated: 'הפרופיל עודכן',
@@ -323,7 +403,7 @@ const translations: { [key: string]: Translation } = {
 };
 
 const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'he'>((localStorage.getItem('language') as 'en' | 'he') || 'en');
+  const [language, setLanguage] = useState<'en' | 'he'>((localStorage.getItem('language') as 'en' | 'he') || 'he');
 
   React.useEffect(() => {
     localStorage.setItem('language', language);
