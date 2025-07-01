@@ -12,7 +12,7 @@ interface LanguageContextProps {
 }
 
 const LanguageContext = createContext<LanguageContextProps>({
-  language: 'en',
+  language: 'he',
   setLanguage: () => {},
   t: (key: string) => key,
 });
@@ -97,6 +97,19 @@ const translations: { [key: string]: Translation } = {
       Medical: 'Medical Support',
       Technology: 'Technology',
       Moving: 'Moving',
+      Companionship: 'Companionship',
+    },
+    status: {
+      active: 'Active',
+      pending: 'Pending',
+      completed: 'Completed',
+    },
+    request: {
+      i_can_help: 'I can help',
+      take_request: 'Take Request',
+      away: 'away',
+      ago: 'ago',
+      interested: 'interested',
     },
     home: {
       hero: {
@@ -286,6 +299,19 @@ const translations: { [key: string]: Translation } = {
       Medical: 'תמיכה רפואית',
       Technology: 'טכנולוגיה',
       Moving: 'מעבר דירה',
+      Companionship: 'חברותא',
+    },
+    status: {
+      active: 'פעיל',
+      pending: 'ממתין',
+      completed: 'הושלם',
+    },
+    request: {
+      i_can_help: 'אני יכול לעזור',
+      take_request: 'קח בקשה',
+      away: 'רחוק',
+      ago: 'לפני',
+      interested: 'מתעניין',
     },
     home: {
       hero: {
@@ -403,30 +429,62 @@ const translations: { [key: string]: Translation } = {
 };
 
 const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'he'>((localStorage.getItem('language') as 'en' | 'he') || 'he');
+  const [language, setLanguage] = useState<'en' | 'he'>(() => {
+    try {
+      const savedLanguage = localStorage.getItem('language') as 'en' | 'he';
+      return savedLanguage || 'he';
+    } catch {
+      return 'he';
+    }
+  });
 
   React.useEffect(() => {
-    localStorage.setItem('language', language);
+    try {
+      localStorage.setItem('language', language);
+    } catch (error) {
+      console.warn('Failed to save language to localStorage:', error);
+    }
   }, [language]);
 
   const t = useCallback(
     (key: string, params: { [key: string]: string | number } = {}) => {
-      let translation = key
-        .split('.')
-        .reduce((obj: any, i: string) => {
-          return obj ? obj[i] : undefined;
-        }, translations[language]);
-
-      if (typeof translation !== 'string') {
-        console.warn(`Translation not found for key: ${key}`);
-        return key;
+      console.log('Translation requested for key:', key, 'language:', language);
+      
+      if (!key) {
+        console.warn('Empty key provided to translation function');
+        return '';
       }
 
-      Object.entries(params).forEach(([paramKey, paramValue]) => {
-        translation = translation.replace(`{{${paramKey}}}`, String(paramValue));
-      });
+      try {
+        const keys = key.split('.');
+        let translation: any = translations[language];
+        
+        for (const k of keys) {
+          if (translation && typeof translation === 'object' && k in translation) {
+            translation = translation[k];
+          } else {
+            console.warn(`Translation not found for key: ${key} at segment: ${k}`);
+            return key;
+          }
+        }
 
-      return translation;
+        if (typeof translation !== 'string') {
+          console.warn(`Translation not found for key: ${key} - result is not a string`);
+          return key;
+        }
+
+        // Replace parameters in the translation
+        let result = translation;
+        Object.entries(params).forEach(([paramKey, paramValue]) => {
+          result = result.replace(`{{${paramKey}}}`, String(paramValue));
+        });
+
+        console.log('Translation found:', result);
+        return result;
+      } catch (error) {
+        console.error('Error in translation function:', error);
+        return key;
+      }
     },
     [language]
   );
@@ -434,6 +492,7 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const contextValue: LanguageContextProps = {
     language,
     setLanguage: (lang: 'en' | 'he') => {
+      console.log('Setting language to:', lang);
       setLanguage(lang);
     },
     t,
@@ -447,7 +506,11 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
 };
 
 const useLanguage = () => {
-  return useContext(LanguageContext);
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 };
 
 export { LanguageProvider, useLanguage };
