@@ -122,27 +122,24 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('HelperProfile: useEffect triggered', { isOwnProfile, id });
+    console.log('HelperProfile: Loading profile...', { isOwnProfile, id });
     
-    const initializeProfile = () => {
+    const initializeProfile = async () => {
       try {
         const user = getCurrentUser();
         console.log('Current user:', user);
         setCurrentUser(user);
         
-        if (isOwnProfile || (user && id === user.id)) {
+        if (isOwnProfile || !id) {
           console.log('Loading own profile');
-          setHelper(user);
-        } else if (id) {
+          setHelper(user || mockHelper);
+        } else {
           console.log('Loading profile for ID:', id);
           // In a real app, fetch helper data by ID
           setHelper(mockHelper);
-        } else {
-          console.log('No ID provided and not own profile');
-          setHelper(user || mockHelper);
         }
       } catch (error) {
-        console.error('Error initializing profile:', error);
+        console.error('Error loading profile:', error);
         setHelper(mockHelper);
       } finally {
         setIsLoading(false);
@@ -152,12 +149,12 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
     initializeProfile();
   }, [id, isOwnProfile]);
 
-  const isOwner = currentUser?.id === helper?.id;
+  const isOwner = currentUser?.id === helper?.id || isOwnProfile;
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-amber-50 flex justify-center items-center" dir={language === 'he' ? 'rtl' : 'ltr'}>
-        <div className="text-xl text-gray-600">טוען...</div>
+        <div className="text-xl text-gray-600">{t('common.loading') || 'טוען...'}</div>
       </div>
     );
   }
@@ -184,13 +181,13 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <h1 className="text-2xl font-bold text-gray-800">
-              {isOwner ? t('profile.title') : `${t('profile.title')} - ${helper.fullName}`}
+              {isOwner ? t('profile.title') || 'הפרופיל שלי' : `פרופיל - ${helper.fullName}`}
             </h1>
           </div>
           {isOwner && (
             <Button variant="outline" onClick={() => navigate('/helper-settings')}>
               <Edit className="w-4 h-4 mr-2" />
-              {t('helper_settings.title')}
+              {t('helper_settings.title') || 'הגדרות'}
             </Button>
           )}
         </div>
@@ -204,7 +201,7 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
             className="flex-1"
           >
             <User className="w-4 h-4 mr-2" />
-            {t('profile.basic_info')}
+            {t('profile.basic_info') || 'מידע בסיסי'}
           </Button>
           <Button
             variant={activeTab === 'history' ? 'default' : 'ghost'}
@@ -213,7 +210,7 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
             className="flex-1"
           >
             <Clock className="w-4 h-4 mr-2" />
-            {t('profile.history')}
+            {t('profile.history') || 'היסטוריה'}
           </Button>
           <Button
             variant={activeTab === 'reviews' ? 'default' : 'ghost'}
@@ -222,7 +219,7 @@ const HelperProfile: React.FC<HelperProfileProps> = ({ isOwnProfile = false }) =
             className="flex-1"
           >
             <MessageSquare className="w-4 h-4 mr-2" />
-            {t('profile.reviews')}
+            {t('profile.reviews') || 'ביקורות'}
           </Button>
         </div>
 
