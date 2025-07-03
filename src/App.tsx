@@ -27,7 +27,7 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/helper-settings" element={<HelperSettings />} />
             <Route path="/helper-profile" element={<HelperProfile isOwnProfile={true} />} />
-            <Route path="/helper-profile/:id" element={<HelperProfile />} />
+            <Route path="/helper-profile/:id" element={<HelperProfile isOwnProfile={false} />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, Home, List, Heart, User, Settings, Globe, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { UserRole } from '@/lib/auth';
+import { UserRole, getCurrentUser } from '@/lib/auth';
 
 interface NavigationProps {
   userRole: UserRole;
@@ -26,6 +26,17 @@ export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, us
   const handleMenuItemClick = (action: () => void) => {
     action();
     setIsOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      // Navigate to own profile
+      navigate('/helper-profile', { replace: true });
+    } else {
+      // Fallback to generic profile
+      navigate('/helper-profile');
+    }
   };
 
   return (
@@ -97,7 +108,7 @@ export const Navigation = ({ userRole, onRoleSwitch, onShowProfile, onLogout, us
             <Button
               variant="ghost"
               className="w-full justify-start"
-              onClick={() => handleMenuItemClick(() => navigate('/helper-profile'))}
+              onClick={() => handleMenuItemClick(handleProfileClick)}
             >
               <User className="w-5 h-5 mr-3" />
               {t('nav.profile')}
